@@ -13,11 +13,11 @@ export default class SortingVisuals extends React.Component {
     componentDidMount() {
         this.resetArray();
     }
-
+    // To generate a new array on start and when refreshed
     resetArray() {
         const array = [];
-        for (let i = 0;i < 100; i++) {
-            array.push(randomIntFromInterval(10,1000));
+        for (let i = 0;i < 200; i++) {
+            array.push(randomIntFromInterval(10,700));
         }
         this.setState({array});
     }
@@ -26,13 +26,15 @@ export default class SortingVisuals extends React.Component {
         const {array} = this.state;
 
         return (
-            <>
+            <div className='array-container'>
             {array.map((value, idx) => (
-                <div className="array-bar" key = {idx}>
-                    {value}
+                <div 
+                    className="array-bar" 
+                    key = {idx}
+                    style={{height: `${value}px`}}>
                 </div>
                 ))}
-            </>
+            </div>
         );
     }
 }
