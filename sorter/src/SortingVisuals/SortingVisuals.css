@@ -1,5 +1,5 @@
 .array-container {
-    position: fixed;
+    position: absolute;
     left: 70px;
     bottom: 20px;
 }
