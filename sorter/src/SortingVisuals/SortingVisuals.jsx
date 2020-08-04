@@ -16,7 +16,7 @@ export default class SortingVisuals extends React.Component {
     // To generate a new array on start and when refreshed
     resetArray() {
         const array = [];
-        for (let i = 0;i < 200; i++) {
+        for (let i = 0; i <200; i++) {
             array.push(randomIntFromInterval(10,700));
         }
         this.setState({array});
