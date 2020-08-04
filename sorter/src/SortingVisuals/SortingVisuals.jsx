@@ -34,6 +34,7 @@ export default class SortingVisuals extends React.Component {
                     style={{height: `${value}px`}}>
                 </div>
                 ))}
+                <button onClick={() => this.resetArray()}>Generate New Array</button>
             </div>
         );
     }
