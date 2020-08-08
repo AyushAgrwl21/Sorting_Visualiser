@@ -1,5 +1,5 @@
 import React from 'react';
-import {getMergeSortAnimations} from '../sortingAlgos/sortingAlgos.js';
+import {getMergeSortAnimations} from '../sortingAlgos/mergeSort.js';
 import './SortingVisuals.css';
 
 // Change this value for the speed of the animations.
