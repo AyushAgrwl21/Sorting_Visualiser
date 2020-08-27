@@ -134,7 +134,7 @@ export default class SortingVisuals extends React.Component {
                 }, i * ANIMATION_SPEED_MS);
                 }
         }
-        const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 6000);
+        const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 8000);
          setTimeout(() => this.restoreSortButtons(), RESTORE_TIME);  
     }
     // quickSort() {
@@ -189,7 +189,7 @@ export default class SortingVisuals extends React.Component {
                 },i * ANIMATION_SPEED_MS);  
             }        }
         // this.setState({array: sortArray})
-         const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 3000);
+         const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 10000);
          setTimeout(() => this.restoreSortButtons(), RESTORE_TIME);  
     }
     heapSort() {}
