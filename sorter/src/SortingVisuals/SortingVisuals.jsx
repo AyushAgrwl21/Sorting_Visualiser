@@ -1,31 +1,27 @@
 import React from 'react';
 import {getMergeSortAnimations} from '../sortingAlgos/mergeSort.js';
 import {getQuickSortAnimations} from '../sortingAlgos/quickSort.js';
+import {getHeapSortAnimations} from '../sortingAlgos/heapSort.js';
+import {getBubbleSortAnimations} from '../sortingAlgos/bubbleSort.js';
 import './SortingVisuals.css';
 
 //Changing width,height accordingly with the browser
 let WINDOW_WIDTH = window.innerWidth;
 let WINDOW_HEIGHT = window.innerHeight;
-
 // Change this value for the speed of the animations.
 const ANIMATION_SPEED_MS = 5;
-
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 200;
-
 // This is the main color of the array bars.
 const PRIMARY_COLOR = 'turquoise';
-
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'purple';
-
 //Tooltips for buttons
 const DISABLED_BUTTON = "Currently Disabled"
 const ENABLED_BUTTON = {
     nlogn: "O(NlogN) Time Complexity",
     nSquare: "O(N^2) Time Complexity"
 }
-
 export default class SortingVisuals extends React.Component {
     constructor(props) {
         super(props);
@@ -34,7 +30,6 @@ export default class SortingVisuals extends React.Component {
             array: [],
         };
     }
-
     componentDidMount() {
         this.resetArray();
     }
@@ -47,7 +42,6 @@ export default class SortingVisuals extends React.Component {
         this.setState({array});
         this.restoreSortButtons();
     }
-
     disableSortButtons() {
         document.getElementById("mergeSort").disabled = true;
         let buttonStyle = document.getElementById("mergeSort").style;
@@ -137,30 +131,6 @@ export default class SortingVisuals extends React.Component {
         const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 8000);
          setTimeout(() => this.restoreSortButtons(), RESTORE_TIME);  
     }
-    // quickSort() {
-    //     const animationsQS=getQuickSortAnimations(this.state.array);
-    //     for (let i=0;i<animationsQS.length;i++) {
-    //         const arrayBars =document.getElementsByClassName('array-bar');
-    //         const isColorChange = i % 2 == 0;
-    //         if (isColorChange) {
-    //             const [barOneIdx, barTwoIdx] = animationsQS[i];
-    //             const barOneStyle = arrayBars[barOneIdx].style;
-    //             const barTwoStyle = arrayBars[barTwoIdx].style;
-    //             const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
-    //             setTimeout(() => {
-    //                 barOneStyle.backgroundColor = color;
-    //                 barTwoStyle.backgroundColor = color;
-    //             }, i * ANIMATION_SPEED_MS);
-    //         } else {
-    //             setTimeout(() => {
-    //                 const [barOneIdx, newHeight] = animationsQS[i];
-    //                 const barOneStyle = arrayBars[barOneIdx].style;
-    //                 barOneStyle.height = `${newHeight}px`;
-    //             }, i * ANIMATION_SPEED_MS);
-    //             }
-    //     }
-    // }
-
 
     quickSort() {
         this.disableSortButtons();
@@ -187,13 +157,45 @@ export default class SortingVisuals extends React.Component {
                 setTimeout(() => {
                     barStyle.height = `${newHeight}px`;
                 },i * ANIMATION_SPEED_MS);  
-            }        }
+            }
+        }
         // this.setState({array: sortArray})
          const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 10000);
          setTimeout(() => this.restoreSortButtons(), RESTORE_TIME);  
     }
+
     heapSort() {}
-    bubbleSort() {}
+    bubbleSort() {
+        this.disableSortButtons();
+        const [animations,sortArray] = getBubbleSortAnimations(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const isColorChange = animations[i][0] == "comparision1" || animations[i][0] == "comparision2";
+            const arrayBars = document.getElementsByClassName('array-bar');
+            if(isColorChange === true) {
+                const color = (animations[i][0] == "comparision1") ? SECONDARY_COLOR : PRIMARY_COLOR;
+                const [comparision, barOneIndex, barTwoIndex] = animations[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                },i * ANIMATION_SPEED_MS);
+            }
+            else {
+                const [swap, barIndex, newHeight] = animations[i];
+                if (barIndex === -1) {
+                    continue;
+                }
+                const barStyle = arrayBars[barIndex].style;
+                setTimeout(() => {
+                    barStyle.height = `${newHeight}px`;
+                },i * ANIMATION_SPEED_MS);  
+            }
+        }
+        // this.setState({array: sortArray})
+        const RESTORE_TIME = parseInt(ANIMATION_SPEED_MS*animations.length/2 + 3000);
+        setTimeout(() => this.restoreStoreButtons(), RESTORE_TIME); 
+    }
     //insertionSort() {}
     //selectionSort() {}
 
@@ -214,13 +216,6 @@ export default class SortingVisuals extends React.Component {
                 </div>
                 ))}
             </div>
-
-            {/* <button onClick={() => this.resetArray()}>Generate New Array</button>
-            <button onClick={() => this.mergeSort()}>Merge Sort</button>
-            <button onClick={() => this.quickSort()}>Quick Sort</button>
-            <button onClick={() => this.heapSort()}>Heap Sort</button>
-            <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-            </div> */}
             
             <div className="buttons" > 
                 <button title="Generates a new random array" style={{position:'relative',top:`${0*(WINDOW_HEIGHT-20)/6}px`}} onClick={() => this.resetArray()}>
@@ -246,8 +241,6 @@ export default class SortingVisuals extends React.Component {
         );
     }
 }
-//<button onClick={() => this.insertionSort()}>Insertion Sort</button>
-//<button onClick={() => this.selectionSort()}>Selection Sort</button>
 
 function randomIntFromInterval(min,max) {
     return Math.floor(Math.random() * (max-min+1)+min);
